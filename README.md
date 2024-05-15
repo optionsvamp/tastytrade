@@ -1,8 +1,8 @@
 # Go Tastytrade Open API Wrapper
 
-Go API wrapper for the Tastytrade Open API
-
 ![Build](https://github.com/optionsvamp/tastytrade/actions/workflows/build.yaml/badge.svg)
+
+Go API wrapper for the Tastytrade Open API
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -35,7 +35,7 @@ import "github.com/optionsvamp/tastytrade"
 Here's a basic example of how to use this wrapper to get account balances:
 
 ```
-api := NewTastytradeAPI("your-api-key")
+api := tastytrade.NewTastytradeAPI("your-api-key")
 balances, err := api.GetAccountBalances("your-account-number")
 if err != nil {
     log.Fatal(err)
