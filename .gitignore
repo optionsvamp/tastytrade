@@ -19,3 +19,7 @@
 
 # Go workspace file
 go.work
+
+# Test scripts (may contain test credentials)
+test_scripts/
+test_api.go

@@ -72,7 +72,7 @@ type ActiveEquityQueryParams struct {
 // trading characteristics, market information, and tick sizes.
 func (api *TastytradeAPI) GetEquityData(symbol string) (EquityResponse, error) {
 	urlVal := fmt.Sprintf("%s/instruments/equities/%s", api.host, symbol)
-	data, err := api.fetchData(urlVal)
+	data, err := api.fetchInstrumentData(urlVal)
 	if err != nil {
 		return EquityResponse{}, err
 	}
@@ -115,7 +115,7 @@ func (api *TastytradeAPI) ListEquities(params *EquityQueryParams) (EquityListRes
 		urlVal = fmt.Sprintf("%s?%s", urlVal, queryParams.Encode())
 	}
 
-	data, err := api.fetchData(urlVal)
+	data, err := api.fetchInstrumentData(urlVal)
 	if err != nil {
 		return EquityListResponse{}, err
 	}
@@ -155,7 +155,7 @@ func (api *TastytradeAPI) ListActiveEquities(params *ActiveEquityQueryParams) (E
 		urlVal = fmt.Sprintf("%s?%s", urlVal, queryParams.Encode())
 	}
 
-	data, err := api.fetchData(urlVal)
+	data, err := api.fetchInstrumentData(urlVal)
 	if err != nil {
 		return EquityListResponse{}, err
 	}

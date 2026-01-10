@@ -287,7 +287,7 @@ func (api *TastytradeAPI) QueryFutures(params *FuturesQueryParams) (FuturesQuery
 		urlVal = fmt.Sprintf("%s?%s", urlVal, queryParams.Encode())
 	}
 
-	data, err := api.fetchData(urlVal)
+	data, err := api.fetchInstrumentData(urlVal)
 	if err != nil {
 		return FuturesQueryResponse{}, err
 	}
@@ -311,7 +311,7 @@ func (api *TastytradeAPI) QueryFutures(params *FuturesQueryParams) (FuturesQuery
 // including expiration, trading characteristics, and product details.
 func (api *TastytradeAPI) GetFuture(symbol string) (FutureResponse, error) {
 	urlVal := fmt.Sprintf("%s/instruments/futures/%s", api.host, url.PathEscape(symbol))
-	data, err := api.fetchData(urlVal)
+	data, err := api.fetchInstrumentData(urlVal)
 	if err != nil {
 		return FutureResponse{}, err
 	}
@@ -335,7 +335,7 @@ func (api *TastytradeAPI) GetFuture(symbol string) (FutureResponse, error) {
 // their configuration and roll information.
 func (api *TastytradeAPI) ListFutureProducts() (FutureProductsResponse, error) {
 	urlVal := fmt.Sprintf("%s/instruments/future-products", api.host)
-	data, err := api.fetchData(urlVal)
+	data, err := api.fetchInstrumentData(urlVal)
 	if err != nil {
 		return FutureProductsResponse{}, err
 	}
@@ -359,7 +359,7 @@ func (api *TastytradeAPI) ListFutureProducts() (FutureProductsResponse, error) {
 // roll settings, clearing codes, and trading parameters.
 func (api *TastytradeAPI) GetFutureProduct(exchange string, symbol string) (FutureProductResponse, error) {
 	urlVal := fmt.Sprintf("%s/instruments/future-products/%s/%s", api.host, exchange, url.PathEscape(symbol))
-	data, err := api.fetchData(urlVal)
+	data, err := api.fetchInstrumentData(urlVal)
 	if err != nil {
 		return FutureProductResponse{}, err
 	}
@@ -383,7 +383,7 @@ func (api *TastytradeAPI) GetFutureProduct(exchange string, symbol string) (Futu
 // by expiration dates and strikes, making it easier to navigate the option chain.
 func (api *TastytradeAPI) ListFutureOptionChainsNested(symbol string) (FutureOptionChainsNestedResponse, error) {
 	urlVal := fmt.Sprintf("%s/futures-option-chains/%s/nested", api.host, symbol)
-	data, err := api.fetchData(urlVal)
+	data, err := api.fetchInstrumentData(urlVal)
 	if err != nil {
 		return FutureOptionChainsNestedResponse{}, err
 	}
@@ -407,7 +407,7 @@ func (api *TastytradeAPI) ListFutureOptionChainsNested(symbol string) (FutureOpt
 // contracts in the chain with comprehensive details for each contract.
 func (api *TastytradeAPI) ListFutureOptionChainsDetailed(symbol string) (FutureOptionChainsDetailedResponse, error) {
 	urlVal := fmt.Sprintf("%s/futures-option-chains/%s", api.host, symbol)
-	data, err := api.fetchData(urlVal)
+	data, err := api.fetchInstrumentData(urlVal)
 	if err != nil {
 		return FutureOptionChainsDetailedResponse{}, err
 	}
@@ -453,7 +453,7 @@ func (api *TastytradeAPI) ListFutureOptions(params *FutureOptionsQueryParams) (F
 		urlVal = fmt.Sprintf("%s?%s", urlVal, queryParams.Encode())
 	}
 
-	data, err := api.fetchData(urlVal)
+	data, err := api.fetchInstrumentData(urlVal)
 	if err != nil {
 		return FutureOptionsDetailedResponse{}, err
 	}
@@ -477,7 +477,7 @@ func (api *TastytradeAPI) ListFutureOptions(params *FutureOptionsQueryParams) (F
 // contract including strike, expiration, exercise style, and settlement details.
 func (api *TastytradeAPI) GetFutureOption(symbol string) (FutureOptionDetailedResponse, error) {
 	urlVal := fmt.Sprintf("%s/instruments/future-options/%s", api.host, url.PathEscape(symbol))
-	data, err := api.fetchData(urlVal)
+	data, err := api.fetchInstrumentData(urlVal)
 	if err != nil {
 		return FutureOptionDetailedResponse{}, err
 	}
@@ -501,7 +501,7 @@ func (api *TastytradeAPI) GetFutureOption(symbol string) (FutureOptionDetailedRe
 // with their configuration and trading parameters.
 func (api *TastytradeAPI) ListFutureOptionProducts() (FutureOptionProductsResponse, error) {
 	urlVal := fmt.Sprintf("%s/instruments/future-option-products", api.host)
-	data, err := api.fetchData(urlVal)
+	data, err := api.fetchInstrumentData(urlVal)
 	if err != nil {
 		return FutureOptionProductsResponse{}, err
 	}
@@ -525,7 +525,7 @@ func (api *TastytradeAPI) ListFutureOptionProducts() (FutureOptionProductsRespon
 // including clearing codes, settlement parameters, and expiration settings.
 func (api *TastytradeAPI) GetFutureOptionProduct(exchange string, rootSymbol string) (FutureOptionProductDetailedResponse, error) {
 	urlVal := fmt.Sprintf("%s/instruments/future-option-products/%s/%s", api.host, exchange, rootSymbol)
-	data, err := api.fetchData(urlVal)
+	data, err := api.fetchInstrumentData(urlVal)
 	if err != nil {
 		return FutureOptionProductDetailedResponse{}, err
 	}

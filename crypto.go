@@ -51,7 +51,7 @@ type GetCryptocurrencyResult struct {
 // with their trading characteristics and venue information.
 func (api *TastytradeAPI) ListCryptocurrencies() (ListCryptocurrenciesResult, error) {
 	url := fmt.Sprintf("%s/instruments/cryptocurrencies", api.host)
-	data, err := api.fetchData(url)
+	data, err := api.fetchInstrumentData(url)
 	if err != nil {
 		return ListCryptocurrenciesResult{}, err
 	}
@@ -75,7 +75,7 @@ func (api *TastytradeAPI) ListCryptocurrencies() (ListCryptocurrenciesResult, er
 // including tick size, venue symbols, and trading status.
 func (api *TastytradeAPI) GetCryptocurrency(symbol string) (GetCryptocurrencyResult, error) {
 	url := fmt.Sprintf("%s/instruments/cryptocurrencies/%s", api.host, symbol)
-	data, err := api.fetchData(url)
+	data, err := api.fetchInstrumentData(url)
 	if err != nil {
 		return GetCryptocurrencyResult{}, err
 	}

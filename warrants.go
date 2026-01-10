@@ -42,7 +42,7 @@ func (api *TastytradeAPI) ListWarrants(symbols ...string) (ListWarrantsResult, e
 	if len(symbols) > 0 {
 		url = fmt.Sprintf("%s?symbols=%s", url, strings.Join(symbols, ","))
 	}
-	data, err := api.fetchData(url)
+	data, err := api.fetchInstrumentData(url)
 	if err != nil {
 		return ListWarrantsResult{}, err
 	}
@@ -66,7 +66,7 @@ func (api *TastytradeAPI) ListWarrants(symbols ...string) (ListWarrantsResult, e
 // including market, description, and trading status.
 func (api *TastytradeAPI) GetWarrant(symbol string) (GetWarrantResult, error) {
 	url := fmt.Sprintf("%s/instruments/warrants/%s", api.host, symbol)
-	data, err := api.fetchData(url)
+	data, err := api.fetchInstrumentData(url)
 	if err != nil {
 		return GetWarrantResult{}, err
 	}

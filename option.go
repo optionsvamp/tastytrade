@@ -182,7 +182,7 @@ type EquityOptionResponse struct {
 // in the chain with comprehensive details for each contract.
 func (api *TastytradeAPI) ListOptionsChainsDetailed(symbol string) (OptionChainsDetailedResponse, error) {
 	urlVal := fmt.Sprintf("%s/option-chains/%s", api.host, symbol)
-	data, err := api.fetchData(urlVal)
+	data, err := api.fetchInstrumentData(urlVal)
 	if err != nil {
 		return OptionChainsDetailedResponse{}, err
 	}
@@ -206,7 +206,7 @@ func (api *TastytradeAPI) ListOptionsChainsDetailed(symbol string) (OptionChains
 // by expiration dates and strike prices, making it easier to navigate the chain.
 func (api *TastytradeAPI) ListOptionChainsNested(symbol string) (OptionChainsNestedResponse, error) {
 	urlVal := fmt.Sprintf("%s/option-chains/%s/nested", api.host, symbol)
-	data, err := api.fetchData(urlVal)
+	data, err := api.fetchInstrumentData(urlVal)
 	if err != nil {
 		return OptionChainsNestedResponse{}, err
 	}
@@ -230,7 +230,7 @@ func (api *TastytradeAPI) ListOptionChainsNested(symbol string) (OptionChainsNes
 // deliverables and option symbols, useful for quick lookups.
 func (api *TastytradeAPI) GetOptionChainsCompact(symbol string) (OptionChainsCompactResponse, error) {
 	urlVal := fmt.Sprintf("%s/option-chains/%s/compact", api.host, symbol)
-	data, err := api.fetchData(urlVal)
+	data, err := api.fetchInstrumentData(urlVal)
 	if err != nil {
 		return OptionChainsCompactResponse{}, err
 	}
@@ -270,7 +270,7 @@ func (api *TastytradeAPI) GetEquityOptions(params *EquityOptionsQueryParams) (Eq
 		urlVal = fmt.Sprintf("%s?%s", urlVal, queryParams.Encode())
 	}
 
-	data, err := api.fetchData(urlVal)
+	data, err := api.fetchInstrumentData(urlVal)
 	if err != nil {
 		return EquityOptionsListResponse{}, err
 	}
@@ -294,7 +294,7 @@ func (api *TastytradeAPI) GetEquityOptions(params *EquityOptionsQueryParams) (Eq
 // contract including strike, expiration, exercise style, and settlement details.
 func (api *TastytradeAPI) GetEquityOption(symbol string) (EquityOptionResponse, error) {
 	url := fmt.Sprintf("%s/instruments/equity-options/%s", api.host, url.PathEscape(symbol))
-	data, err := api.fetchData(url)
+	data, err := api.fetchInstrumentData(url)
 	if err != nil {
 		return EquityOptionResponse{}, err
 	}
