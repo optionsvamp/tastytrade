@@ -1,4 +1,4 @@
-# Go Tastytrade Open API Wrapper
+# Tastytrade Open API Go Wrapper
 
 ![Build](https://github.com/optionsvamp/tastytrade/actions/workflows/build.yaml/badge.svg)
 

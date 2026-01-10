@@ -5,40 +5,46 @@ import (
 	"fmt"
 )
 
+// Position represents a trading position in an account.
+// It contains information about the position including quantity, prices, P&L, and status.
 type Position struct {
-	AccountNumber                 string `json:"account-number"`
-	Symbol                        string `json:"symbol"`
-	InstrumentType                string `json:"instrument-type"`
-	UnderlyingSymbol              string `json:"underlying-symbol"`
-	Quantity                      string `json:"quantity"`
-	QuantityDirection             string `json:"quantity-direction"`
-	ClosePrice                    string `json:"close-price"`
-	AverageOpenPrice              string `json:"average-open-price"`
-	AverageYearlyMarketClosePrice string `json:"average-yearly-market-close-price"`
-	AverageDailyMarketClosePrice  string `json:"average-daily-market-close-price"`
-	Multiplier                    int    `json:"multiplier"`
-	CostEffect                    string `json:"cost-effect"`
-	IsSuppressed                  bool   `json:"is-suppressed"`
-	IsFrozen                      bool   `json:"is-frozen"`
-	RestrictedQuantity            string `json:"restricted-quantity"`
-	RealizedDayGain               string `json:"realized-day-gain"`
-	RealizedDayGainEffect         string `json:"realized-day-gain-effect"`
-	RealizedDayGainDate           string `json:"realized-day-gain-date"`
-	RealizedToday                 string `json:"realized-today"`
-	RealizedTodayEffect           string `json:"realized-today-effect"`
-	RealizedTodayDate             string `json:"realized-today-date"`
-	CreatedAt                     string `json:"created-at"`
-	UpdatedAt                     string `json:"updated-at"`
+	AccountNumber                 string `json:"account-number"`                    // Account number holding the position
+	Symbol                        string `json:"symbol"`                            // Symbol of the position
+	InstrumentType                string `json:"instrument-type"`                   // Type of instrument (Equity, Option, Future, etc.)
+	UnderlyingSymbol              string `json:"underlying-symbol"`                 // Underlying symbol for derivatives
+	Quantity                      string `json:"quantity"`                          // Position quantity
+	QuantityDirection             string `json:"quantity-direction"`                // Direction: "Long" or "Short"
+	ClosePrice                    string `json:"close-price"`                       // Closing price
+	AverageOpenPrice              string `json:"average-open-price"`                // Average price at which position was opened
+	AverageYearlyMarketClosePrice string `json:"average-yearly-market-close-price"` // Average yearly market close price
+	AverageDailyMarketClosePrice  string `json:"average-daily-market-close-price"`  // Average daily market close price
+	Multiplier                    int    `json:"multiplier"`                        // Contract multiplier
+	CostEffect                    string `json:"cost-effect"`                       // Cost effect: "Debit" or "Credit"
+	IsSuppressed                  bool   `json:"is-suppressed"`                     // Whether position is suppressed
+	IsFrozen                      bool   `json:"is-frozen"`                         // Whether position is frozen
+	RestrictedQuantity            string `json:"restricted-quantity"`               // Quantity that is restricted
+	RealizedDayGain               string `json:"realized-day-gain"`                 // Realized gain for the day
+	RealizedDayGainEffect         string `json:"realized-day-gain-effect"`          // Effect of day gain: "Debit" or "Credit"
+	RealizedDayGainDate           string `json:"realized-day-gain-date"`            // Date of realized day gain
+	RealizedToday                 string `json:"realized-today"`                    // Realized P&L for today
+	RealizedTodayEffect           string `json:"realized-today-effect"`             // Effect of today's realized P&L: "Debit" or "Credit"
+	RealizedTodayDate             string `json:"realized-today-date"`               // Date of today's realized P&L
+	CreatedAt                     string `json:"created-at"`                        // Position creation timestamp
+	UpdatedAt                     string `json:"updated-at"`                        // Position last update timestamp
 }
 
+// PositionsResponse represents the response structure returned by GetPositions.
+// It contains a list of positions for the account and context information.
 type PositionsResponse struct {
-	Context string `json:"context"`
+	Context string `json:"context"` // API context identifier
 	Data    struct {
-		Items []Position `json:"items"`
+		Items []Position `json:"items"` // Array of positions
 	} `json:"data"`
 }
 
-// GetPositions retrieves positions for a specific account
+// GetPositions retrieves all positions for a specific account.
+// Returns a PositionsResponse containing a list of all open positions including
+// equities, options, futures, and other instruments.
 func (api *TastytradeAPI) GetPositions(accountNumber string) (PositionsResponse, error) {
 	url := fmt.Sprintf("%s/accounts/%s/positions", api.host, accountNumber)
 	data, err := api.fetchData(url)

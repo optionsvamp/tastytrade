@@ -6,51 +6,58 @@ import (
 	"net/url"
 )
 
+// Transaction represents a single transaction in an account.
+// It contains details about trades, deposits, withdrawals, fees, and other account activities.
 type Transaction struct {
-	ID                 int    `json:"id"`
-	AccountNumber      string `json:"account-number"`
-	Symbol             string `json:"symbol"`
-	InstrumentType     string `json:"instrument-type"`
-	UnderlyingSymbol   string `json:"underlying-symbol"`
-	TransactionType    string `json:"transaction-type"`
-	TransactionSubType string `json:"transaction-sub-type"`
-	Description        string `json:"description"`
-	Action             string `json:"action"`
-	Quantity           string `json:"quantity"`
-	Price              string `json:"price"`
-	ExecutedAt         string `json:"executed-at"`
-	TransactionDate    string `json:"transaction-date"`
-	Value              string `json:"value"`
-	ValueEffect        string `json:"value-effect"`
-	NetValue           string `json:"net-value"`
-	NetValueEffect     string `json:"net-value-effect"`
-	IsEstimatedFee     bool   `json:"is-estimated-fee"`
+	ID                 int    `json:"id"`                   // Transaction ID
+	AccountNumber      string `json:"account-number"`       // Account number
+	Symbol             string `json:"symbol"`               // Symbol of the instrument
+	InstrumentType     string `json:"instrument-type"`      // Type of instrument (Equity, Option, Future, etc.)
+	UnderlyingSymbol   string `json:"underlying-symbol"`    // Underlying symbol for derivatives
+	TransactionType    string `json:"transaction-type"`     // Type of transaction (e.g., "Money Movement", "Trade", "Fee", "Deposit")
+	TransactionSubType string `json:"transaction-sub-type"` // Subtype of transaction (e.g., "Withdrawal", "Deposit", "Fee")
+	Description        string `json:"description"`          // Transaction description
+	Action             string `json:"action"`               // Action taken (e.g., "Buy", "Sell", or empty string for non-trade transactions)
+	Quantity           string `json:"quantity"`             // Transaction quantity
+	Price              string `json:"price"`                // Transaction price
+	ExecutedAt         string `json:"executed-at"`          // Execution timestamp
+	TransactionDate    string `json:"transaction-date"`     // Transaction date
+	Value              string `json:"value"`                // Transaction value
+	ValueEffect        string `json:"value-effect"`         // Value effect: "Debit" or "Credit" (example: "Debit")
+	NetValue           string `json:"net-value"`            // Net transaction value
+	NetValueEffect     string `json:"net-value-effect"`     // Net value effect: "Debit" or "Credit" (example: "Debit")
+	IsEstimatedFee     bool   `json:"is-estimated-fee"`     // Whether fee is estimated
 }
 
+// TransactionResponse represents the response structure returned by GetTransaction.
+// It contains a single transaction and context information.
 type TransactionResponse struct {
-	Data    Transaction `json:"data"`
-	Context string      `json:"context"`
+	Data    Transaction `json:"data"`    // Transaction data
+	Context string      `json:"context"` // API context identifier
 }
 
+// Pagination contains pagination information for paginated responses.
 type Pagination struct {
-	PerPage            int     `json:"per-page"`
-	PageOffset         int     `json:"page-offset"`
-	ItemOffset         int     `json:"item-offset"`
-	TotalItems         int     `json:"total-items"`
-	TotalPages         int     `json:"total-pages"`
-	CurrentItemCount   int     `json:"current-item-count"`
-	PreviousLink       *string `json:"previous-link"`
-	NextLink           *string `json:"next-link"`
-	PagingLinkTemplate *string `json:"paging-link-template"`
+	PerPage            int     `json:"per-page"`             // Number of items per page
+	PageOffset         int     `json:"page-offset"`          // Current page offset
+	ItemOffset         int     `json:"item-offset"`          // Current item offset
+	TotalItems         int     `json:"total-items"`          // Total number of items
+	TotalPages         int     `json:"total-pages"`          // Total number of pages
+	CurrentItemCount   int     `json:"current-item-count"`   // Number of items in current page
+	PreviousLink       *string `json:"previous-link"`        // Link to previous page (if available)
+	NextLink           *string `json:"next-link"`            // Link to next page (if available)
+	PagingLinkTemplate *string `json:"paging-link-template"` // Template for paging links
 }
 
+// TransactionsResponse represents the response structure returned by GetTransactions.
+// It contains a paginated list of transactions, API version, context, and pagination information.
 type TransactionsResponse struct {
 	Data struct {
-		Items []Transaction `json:"items"`
+		Items []Transaction `json:"items"` // Array of transactions
 	} `json:"data"`
-	APIVersion string     `json:"api-version"`
-	Context    string     `json:"context"`
-	Pagination Pagination `json:"pagination"`
+	APIVersion string     `json:"api-version"` // API version
+	Context    string     `json:"context"`     // API context identifier
+	Pagination Pagination `json:"pagination"`  // Pagination information
 }
 
 type TransactionQueryParams struct {
@@ -70,7 +77,10 @@ type TransactionQueryParams struct {
 	EndAt            string   `json:"end-at"`
 }
 
-// GetTransactions retrieves transactions for a specific account
+// GetTransactions retrieves transactions for a specific account with optional filtering.
+// params can be nil to retrieve all transactions, or can filter by type, date range,
+// symbol, instrument type, action, and other criteria.
+// Returns a TransactionsResponse containing a paginated list of matching transactions.
 func (api *TastytradeAPI) GetTransactions(accountNumber string, params *TransactionQueryParams) (TransactionsResponse, error) {
 	urlVal := fmt.Sprintf("%s/accounts/%s/transactions", api.host, accountNumber)
 
@@ -140,7 +150,8 @@ func (api *TastytradeAPI) GetTransactions(accountNumber string, params *Transact
 	return response, nil
 }
 
-// GetTransaction retrieves a specific transaction for a specific account
+// GetTransaction retrieves a specific transaction by ID for a specific account.
+// Returns a TransactionResponse containing detailed information about the transaction.
 func (api *TastytradeAPI) GetTransaction(accountNumber string, transactionID string) (TransactionResponse, error) {
 	urlVal := fmt.Sprintf("%s/accounts/%s/transactions/%s", api.host, accountNumber, transactionID)
 	data, err := api.fetchData(urlVal)

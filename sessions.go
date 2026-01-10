@@ -7,24 +7,31 @@ import (
 	"net/http"
 )
 
+// User represents user information returned after authentication.
 type User struct {
-	Email       string `json:"email"`
-	Username    string `json:"username"`
-	ExternalID  string `json:"external-id"`
-	IsConfirmed bool   `json:"is-confirmed"`
+	Email       string `json:"email"`        // User's email address
+	Username    string `json:"username"`     // Username
+	ExternalID  string `json:"external-id"`  // External identifier
+	IsConfirmed bool   `json:"is-confirmed"` // Whether the account is confirmed
 }
 
+// AuthData represents authentication data returned by the Authenticate endpoint.
+// It contains user information and a session token for subsequent API requests.
 type AuthData struct {
-	User         User   `json:"user"`
-	SessionToken string `json:"session-token"`
+	User         User   `json:"user"`          // User information
+	SessionToken string `json:"session-token"` // Session token for API authentication
 }
 
+// AuthResponse represents the response structure returned by Authenticate.
+// It contains authentication data and context information.
 type AuthResponse struct {
-	Data    AuthData `json:"data"`
-	Context string   `json:"context"`
+	Data    AuthData `json:"data"`    // Authentication data
+	Context string   `json:"context"` // API context identifier
 }
 
-// Authenticate authenticates the client with the Tastytrade API
+// Authenticate authenticates the client with the Tastytrade API using username and password.
+// On success, the session token is stored in the API client for use in subsequent requests.
+// Returns an error if authentication fails.
 func (api *TastytradeAPI) Authenticate(username, password string) error {
 	authURL := fmt.Sprintf("%s/sessions", api.host)
 	authData := map[string]string{

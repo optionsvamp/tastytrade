@@ -6,11 +6,13 @@ import (
 	"net/url"
 )
 
+// FutureETFEquivalent represents an ETF equivalent for a future contract.
 type FutureETFEquivalent struct {
-	Symbol        string `json:"symbol"`
-	ShareQuantity int    `json:"share-quantity"`
+	Symbol        string `json:"symbol"`         // ETF symbol
+	ShareQuantity int    `json:"share-quantity"` // Number of shares equivalent
 }
 
+// FutureProduct represents a future product with configuration and roll information.
 type FutureProduct struct {
 	RootSymbol                   string   `json:"root-symbol"`
 	Code                         string   `json:"code"`
@@ -43,126 +45,145 @@ type FutureProduct struct {
 	} `json:"roll"`
 }
 
+// TickSize represents a tick size with optional threshold and symbol.
 type TickSize struct {
-	Value     string `json:"value"`
-	Threshold string `json:"threshold,omitempty"`
-	Symbol    string `json:"symbol,omitempty"`
+	Value     string `json:"value"`               // Tick size value
+	Threshold string `json:"threshold,omitempty"` // Optional threshold for the tick size
+	Symbol    string `json:"symbol,omitempty"`    // Optional symbol identifier
 }
 
+// Future represents a future contract with comprehensive details.
+// It contains information about the contract, product, expiration, and trading characteristics.
 type Future struct {
-	Symbol                       string              `json:"symbol"`
-	ProductCode                  string              `json:"product-code"`
-	ContractSize                 string              `json:"contract-size"`
-	TickSize                     string              `json:"tick-size"`
-	NotionalMultiplier           string              `json:"notional-multiplier"`
-	MainFraction                 string              `json:"main-fraction"`
-	SubFraction                  string              `json:"sub-fraction"`
-	DisplayFactor                string              `json:"display-factor"`
-	LastTradeDate                string              `json:"last-trade-date"`
-	ExpirationDate               string              `json:"expiration-date"`
-	ClosingOnlyDate              string              `json:"closing-only-date"`
-	Active                       bool                `json:"active"`
-	ActiveMonth                  bool                `json:"active-month"`
-	NextActiveMonth              bool                `json:"next-active-month"`
-	IsClosingOnly                bool                `json:"is-closing-only"`
-	StopsTradingAt               string              `json:"stops-trading-at"`
-	ExpiresAt                    string              `json:"expires-at"`
-	ProductGroup                 string              `json:"product-group"`
-	Exchange                     string              `json:"exchange"`
-	RollTargetSymbol             string              `json:"roll-target-symbol"`
-	StreamerExchangeCode         string              `json:"streamer-exchange-code"`
-	StreamerSymbol               string              `json:"streamer-symbol"`
-	BackMonthFirstCalendarSymbol bool                `json:"back-month-first-calendar-symbol"`
-	IsTradeable                  bool                `json:"is-tradeable"`
-	FutureETFEquivalent          FutureETFEquivalent `json:"future-etf-equivalent"`
-	FutureProduct                FutureProduct       `json:"future-product"`
-	TickSizes                    []TickSize          `json:"tick-sizes"`
-	OptionTickSizes              []TickSize          `json:"option-tick-sizes"`
-	SpreadTickSizes              []TickSize          `json:"spread-tick-sizes"`
+	Symbol                       string              `json:"symbol"`                           // Future contract symbol
+	ProductCode                  string              `json:"product-code"`                     // Product code
+	ContractSize                 string              `json:"contract-size"`                    // Contract size
+	TickSize                     string              `json:"tick-size"`                        // Tick size
+	NotionalMultiplier           string              `json:"notional-multiplier"`              // Notional multiplier
+	MainFraction                 string              `json:"main-fraction"`                    // Main fraction
+	SubFraction                  string              `json:"sub-fraction"`                     // Sub fraction
+	DisplayFactor                string              `json:"display-factor"`                   // Display factor
+	LastTradeDate                string              `json:"last-trade-date"`                  // Last trade date
+	ExpirationDate               string              `json:"expiration-date"`                  // Expiration date
+	ClosingOnlyDate              string              `json:"closing-only-date"`                // Closing only date
+	Active                       bool                `json:"active"`                           // Whether the future is active
+	ActiveMonth                  bool                `json:"active-month"`                     // Whether this is the active month
+	NextActiveMonth              bool                `json:"next-active-month"`                // Whether this is the next active month
+	IsClosingOnly                bool                `json:"is-closing-only"`                  // Whether only closing positions are allowed
+	StopsTradingAt               string              `json:"stops-trading-at"`                 // Time when trading stops
+	ExpiresAt                    string              `json:"expires-at"`                       // Expiration timestamp
+	ProductGroup                 string              `json:"product-group"`                    // Product group
+	Exchange                     string              `json:"exchange"`                         // Exchange where the future trades
+	RollTargetSymbol             string              `json:"roll-target-symbol"`               // Target symbol for rolling
+	StreamerExchangeCode         string              `json:"streamer-exchange-code"`           // Streamer exchange code
+	StreamerSymbol               string              `json:"streamer-symbol"`                  // Symbol used for streaming quotes
+	BackMonthFirstCalendarSymbol bool                `json:"back-month-first-calendar-symbol"` // Whether back month uses first calendar symbol
+	IsTradeable                  bool                `json:"is-tradeable"`                     // Whether the future is tradeable
+	FutureETFEquivalent          FutureETFEquivalent `json:"future-etf-equivalent"`            // ETF equivalent information
+	FutureProduct                FutureProduct       `json:"future-product"`                   // Future product information
+	TickSizes                    []TickSize          `json:"tick-sizes"`                       // Array of tick sizes
+	OptionTickSizes              []TickSize          `json:"option-tick-sizes"`                // Array of option tick sizes
+	SpreadTickSizes              []TickSize          `json:"spread-tick-sizes"`                // Array of spread tick sizes
 }
 
+// FuturesQueryResponse represents the response structure returned by QueryFutures.
+// It contains a list of future contracts matching the query parameters.
 type FuturesQueryResponse struct {
 	Data struct {
-		Items []Future `json:"items"`
+		Items []Future `json:"items"` // Array of future contracts
 	} `json:"data"`
 }
 
+// FuturesQueryParams represents query parameters for filtering futures.
 type FuturesQueryParams struct {
-	Symbol      []string `json:"symbol"`
-	ProductCode []string `json:"product-code"`
+	Symbol      []string `json:"symbol"`       // Array of future symbols to filter by
+	ProductCode []string `json:"product-code"` // Array of product codes to filter by
 }
 
+// FutureResponse represents the response structure returned by GetFuture.
+// It contains detailed information about a specific future contract.
 type FutureResponse struct {
-	Data    Future `json:"data"`
-	Context string `json:"context"`
+	Data    Future `json:"data"`    // Future contract data
+	Context string `json:"context"` // API context identifier
 }
 
+// FutureOptionProduct represents a future option product configuration.
 type FutureOptionProduct struct {
-	RootSymbol              string `json:"root-symbol"`
-	CashSettled             bool   `json:"cash-settled"`
-	Code                    string `json:"code"`
-	LegacyCode              string `json:"legacy-code"`
-	ClearportCode           string `json:"clearport-code"`
-	ClearingCode            string `json:"clearing-code"`
-	ClearingExchangeCode    string `json:"clearing-exchange-code"`
-	ClearingPriceMultiplier string `json:"clearing-price-multiplier"`
-	DisplayFactor           string `json:"display-factor"`
-	Exchange                string `json:"exchange"`
-	ProductType             string `json:"product-type"`
-	ExpirationType          string `json:"expiration-type"`
-	SettlementDelayDays     int    `json:"settlement-delay-days"`
-	IsRollover              bool   `json:"is-rollover"`
-	MarketSector            string `json:"market-sector"`
+	RootSymbol              string `json:"root-symbol"`               // Root symbol
+	CashSettled             bool   `json:"cash-settled"`              // Whether cash settled
+	Code                    string `json:"code"`                      // Product code
+	LegacyCode              string `json:"legacy-code"`               // Legacy code
+	ClearportCode           string `json:"clearport-code"`            // Clearport code
+	ClearingCode            string `json:"clearing-code"`             // Clearing code
+	ClearingExchangeCode    string `json:"clearing-exchange-code"`    // Clearing exchange code
+	ClearingPriceMultiplier string `json:"clearing-price-multiplier"` // Clearing price multiplier
+	DisplayFactor           string `json:"display-factor"`            // Display factor
+	Exchange                string `json:"exchange"`                  // Exchange
+	ProductType             string `json:"product-type"`              // Product type
+	ExpirationType          string `json:"expiration-type"`           // Expiration type
+	SettlementDelayDays     int    `json:"settlement-delay-days"`     // Settlement delay in days
+	IsRollover              bool   `json:"is-rollover"`               // Whether rollover is enabled
+	MarketSector            string `json:"market-sector"`             // Market sector
 }
 
+// FutureProductsResponse represents the response structure returned by ListFutureProducts.
+// It contains a list of future products.
 type FutureProductsResponse struct {
 	Data struct {
-		Items []FutureProduct `json:"items"`
+		Items []FutureProduct `json:"items"` // Array of future products
 	} `json:"data"`
-	Context string `json:"context"`
+	Context string `json:"context"` // API context identifier
 }
 
+// FutureProductResponse represents the response structure returned by GetFutureProduct.
+// It contains detailed information about a specific future product.
 type FutureProductResponse struct {
-	Data    FutureProduct `json:"data"`
-	Context string        `json:"context"`
+	Data    FutureProduct `json:"data"`    // Future product data
+	Context string        `json:"context"` // API context identifier
 }
 
+// FuturesOptionExpirationNested represents expiration information in nested future option chain responses.
 type FuturesOptionExpirationNested struct {
-	UnderlyingSymbol     string         `json:"underlying-symbol"`
-	RootSymbol           string         `json:"root-symbol"`
-	OptionRootSymbol     string         `json:"option-root-symbol"`
-	OptionContractSymbol string         `json:"option-contract-symbol"`
-	Asset                string         `json:"asset"`
-	ExpirationDate       string         `json:"expiration-date"`
-	DaysToExpiration     int            `json:"days-to-expiration"`
-	ExpirationType       string         `json:"expiration-type"`
-	SettlementType       string         `json:"settlement-type"`
-	NotionalValue        string         `json:"notional-value"`
-	DisplayFactor        string         `json:"display-factor"`
-	StrikeFactor         string         `json:"strike-factor"`
-	StopsTradingAt       string         `json:"stops-trading-at"`
-	ExpiresAt            string         `json:"expires-at"`
-	TickSizes            []TickSize     `json:"tick-sizes"`
-	Strikes              []StrikeNested `json:"strikes"`
+	UnderlyingSymbol     string         `json:"underlying-symbol"`      // Underlying future symbol
+	RootSymbol           string         `json:"root-symbol"`            // Root symbol
+	OptionRootSymbol     string         `json:"option-root-symbol"`     // Option root symbol
+	OptionContractSymbol string         `json:"option-contract-symbol"` // Option contract symbol
+	Asset                string         `json:"asset"`                  // Asset type
+	ExpirationDate       string         `json:"expiration-date"`        // Expiration date (YYYY-MM-DD)
+	DaysToExpiration     int            `json:"days-to-expiration"`     // Number of days until expiration
+	ExpirationType       string         `json:"expiration-type"`        // Expiration type
+	SettlementType       string         `json:"settlement-type"`        // Settlement type
+	NotionalValue        string         `json:"notional-value"`         // Notional value
+	DisplayFactor        string         `json:"display-factor"`         // Display factor
+	StrikeFactor         string         `json:"strike-factor"`          // Strike factor
+	StopsTradingAt       string         `json:"stops-trading-at"`       // Time when trading stops
+	ExpiresAt            string         `json:"expires-at"`             // Expiration timestamp
+	TickSizes            []TickSize     `json:"tick-sizes"`             // Array of tick sizes
+	Strikes              []StrikeNested `json:"strikes"`                // Array of strike prices (StrikeNested is defined in option.go). For futures options, Call/Put may use different format (e.g., "./ESH6 EW2G6 260213C5200")
 }
 
+// OptionChain represents a future option chain with expirations.
 type OptionChain struct {
-	UnderlyingSymbol string                          `json:"underlying-symbol"`
-	RootSymbol       string                          `json:"root-symbol"`
-	ExerciseStyle    string                          `json:"exercise-style"`
-	Expirations      []FuturesOptionExpirationNested `json:"expirations"`
+	UnderlyingSymbol string                          `json:"underlying-symbol"` // Underlying future symbol
+	RootSymbol       string                          `json:"root-symbol"`       // Root symbol
+	ExerciseStyle    string                          `json:"exercise-style"`    // Exercise style: "American" or "European"
+	Expirations      []FuturesOptionExpirationNested `json:"expirations"`       // Array of expiration dates with strikes
 }
 
+// FutureOptionChainsNestedData contains futures and their associated option chains.
 type FutureOptionChainsNestedData struct {
-	Futures      []Future      `json:"futures"`
-	OptionChains []OptionChain `json:"option-chains"`
+	Futures      []Future      `json:"futures"`       // Array of future contracts
+	OptionChains []OptionChain `json:"option-chains"` // Array of option chains for the futures
 }
 
+// FutureOptionChainsNestedResponse represents the response structure returned by ListFutureOptionChainsNested.
+// It contains a nested structure with futures and their option chains organized by expiration.
 type FutureOptionChainsNestedResponse struct {
-	Data    FutureOptionChainsNestedData `json:"data"`
-	Context string                       `json:"context"`
+	Data    FutureOptionChainsNestedData `json:"data"`    // Nested data containing futures and option chains
+	Context string                       `json:"context"` // API context identifier
 }
 
+// FutureOption represents a future option contract with comprehensive details.
 type FutureOption struct {
 	Symbol               string              `json:"symbol"`
 	UnderlyingSymbol     string              `json:"underlying-symbol"`
@@ -199,46 +220,59 @@ type FutureOption struct {
 	FutureOptionProduct  FutureOptionProduct `json:"future-option-product"`
 }
 
+// FutureOptionChainsDetailedResponse represents the response structure returned by ListFutureOptionChainsDetailed.
+// It contains a detailed list of all future option contracts in the chain.
 type FutureOptionChainsDetailedResponse struct {
 	Data struct {
-		Items []FutureOption `json:"items"`
+		Items []FutureOption `json:"items"` // Array of detailed future option contracts
 	} `json:"data"`
-	Context string `json:"context"`
+	Context string `json:"context"` // API context identifier
 }
 
+// FutureOptionsDetailedResponse represents the response structure returned by ListFutureOptions.
+// It contains a list of future options matching the query parameters.
 type FutureOptionsDetailedResponse struct {
 	Data struct {
-		Items []FutureOption `json:"items"`
+		Items []FutureOption `json:"items"` // Array of future option contracts
 	} `json:"data"`
-	Context string `json:"context"`
+	Context string `json:"context"` // API context identifier
 }
 
+// FutureOptionProductsResponse represents the response structure returned by ListFutureOptionProducts.
+// It contains a list of future option products.
 type FutureOptionProductsResponse struct {
 	Data struct {
-		Items []FutureOptionProduct `json:"items"`
+		Items []FutureOptionProduct `json:"items"` // Array of future option products
 	} `json:"data"`
-	Context string `json:"context"`
+	Context string `json:"context"` // API context identifier
 }
 
+// FutureOptionProductDetailedResponse represents the response structure returned by GetFutureOptionProduct.
+// It contains detailed information about a specific future option product.
 type FutureOptionProductDetailedResponse struct {
-	Data    FutureOptionProduct `json:"data"`
-	Context string              `json:"context"`
+	Data    FutureOptionProduct `json:"data"`    // Future option product data
+	Context string              `json:"context"` // API context identifier
 }
 
+// FutureOptionsQueryParams represents query parameters for filtering future options.
 type FutureOptionsQueryParams struct {
-	Symbol           []string `json:"symbol"`
-	OptionRootSymbol string   `json:"option-root-symbol"`
-	ExpirationDate   string   `json:"expiration-date"`
-	OptionType       string   `json:"option-type"`
-	StrikePrice      float64  `json:"strike-price"`
+	Symbol           []string `json:"symbol"`             // Array of future option symbols to filter by
+	OptionRootSymbol string   `json:"option-root-symbol"` // Option root symbol to filter by
+	ExpirationDate   string   `json:"expiration-date"`    // Expiration date to filter by
+	OptionType       string   `json:"option-type"`        // Option type to filter by (Call/Put)
+	StrikePrice      float64  `json:"strike-price"`       // Strike price to filter by
 }
 
+// FutureOptionDetailedResponse represents the response structure returned by GetFutureOption.
+// It contains detailed information about a specific future option contract.
 type FutureOptionDetailedResponse struct {
-	Data    FutureOption `json:"data"`
-	Context string       `json:"context"`
+	Data    FutureOption `json:"data"`    // Future option data
+	Context string       `json:"context"` // API context identifier
 }
 
-// QueryFutures retrieves a list of futures
+// QueryFutures retrieves a list of futures based on optional query parameters.
+// params can be nil to retrieve all futures, or can filter by symbol or product code.
+// Returns a FuturesQueryResponse containing a list of matching future contracts.
 func (api *TastytradeAPI) QueryFutures(params *FuturesQueryParams) (FuturesQueryResponse, error) {
 	urlVal := fmt.Sprintf("%s/instruments/futures", api.host)
 
@@ -272,7 +306,9 @@ func (api *TastytradeAPI) QueryFutures(params *FuturesQueryParams) (FuturesQuery
 	return response, nil
 }
 
-// GetFuture retrieves data for a specific future symbol
+// GetFuture retrieves data for a specific future symbol.
+// Returns a FutureResponse containing detailed information about the future contract
+// including expiration, trading characteristics, and product details.
 func (api *TastytradeAPI) GetFuture(symbol string) (FutureResponse, error) {
 	urlVal := fmt.Sprintf("%s/instruments/futures/%s", api.host, url.PathEscape(symbol))
 	data, err := api.fetchData(urlVal)
@@ -294,7 +330,9 @@ func (api *TastytradeAPI) GetFuture(symbol string) (FutureResponse, error) {
 	return response, nil
 }
 
-// ListFutureProducts retrieves a list of future products
+// ListFutureProducts retrieves a list of all future products.
+// Returns a FutureProductsResponse containing all available future products with
+// their configuration and roll information.
 func (api *TastytradeAPI) ListFutureProducts() (FutureProductsResponse, error) {
 	urlVal := fmt.Sprintf("%s/instruments/future-products", api.host)
 	data, err := api.fetchData(urlVal)
@@ -316,7 +354,9 @@ func (api *TastytradeAPI) ListFutureProducts() (FutureProductsResponse, error) {
 	return response, nil
 }
 
-// GetFutureProduct retrieves data for a specific future product
+// GetFutureProduct retrieves data for a specific future product by exchange and symbol.
+// Returns a FutureProductResponse containing detailed product configuration including
+// roll settings, clearing codes, and trading parameters.
 func (api *TastytradeAPI) GetFutureProduct(exchange string, symbol string) (FutureProductResponse, error) {
 	urlVal := fmt.Sprintf("%s/instruments/future-products/%s/%s", api.host, exchange, url.PathEscape(symbol))
 	data, err := api.fetchData(urlVal)
@@ -338,7 +378,9 @@ func (api *TastytradeAPI) GetFutureProduct(exchange string, symbol string) (Futu
 	return response, nil
 }
 
-// ListFutureOptionChainsNested retrieves nested future option chain data for a specific symbol
+// ListFutureOptionChainsNested retrieves nested future option chain data for a specific future symbol.
+// Returns a FutureOptionChainsNestedResponse containing a hierarchical structure organized
+// by expiration dates and strikes, making it easier to navigate the option chain.
 func (api *TastytradeAPI) ListFutureOptionChainsNested(symbol string) (FutureOptionChainsNestedResponse, error) {
 	urlVal := fmt.Sprintf("%s/futures-option-chains/%s/nested", api.host, symbol)
 	data, err := api.fetchData(urlVal)
@@ -360,7 +402,9 @@ func (api *TastytradeAPI) ListFutureOptionChainsNested(symbol string) (FutureOpt
 	return response, nil
 }
 
-// ListFutureOptionChainsDetailed retrieves detailed future option chain data for a specific symbol
+// ListFutureOptionChainsDetailed retrieves detailed future option chain data for a specific future symbol.
+// Returns a FutureOptionChainsDetailedResponse containing a flat list of all future option
+// contracts in the chain with comprehensive details for each contract.
 func (api *TastytradeAPI) ListFutureOptionChainsDetailed(symbol string) (FutureOptionChainsDetailedResponse, error) {
 	urlVal := fmt.Sprintf("%s/futures-option-chains/%s", api.host, symbol)
 	data, err := api.fetchData(urlVal)
@@ -382,7 +426,10 @@ func (api *TastytradeAPI) ListFutureOptionChainsDetailed(symbol string) (FutureO
 	return response, nil
 }
 
-// ListFutureOptions retrieves future option data for a specific symbol with query parameters
+// ListFutureOptions retrieves future option data based on query parameters.
+// params can be nil to retrieve all future options, or can filter by symbol, option root symbol,
+// expiration date, option type, and strike price.
+// Returns a FutureOptionsDetailedResponse containing matching future option contracts.
 func (api *TastytradeAPI) ListFutureOptions(params *FutureOptionsQueryParams) (FutureOptionsDetailedResponse, error) {
 	urlVal := fmt.Sprintf("%s/instruments/future-options", api.host)
 
@@ -425,7 +472,9 @@ func (api *TastytradeAPI) ListFutureOptions(params *FutureOptionsQueryParams) (F
 	return response, nil
 }
 
-// GetFutureOption retrieves data for a specific future option symbol
+// GetFutureOption retrieves data for a specific future option symbol.
+// Returns a FutureOptionDetailedResponse containing detailed information about the future option
+// contract including strike, expiration, exercise style, and settlement details.
 func (api *TastytradeAPI) GetFutureOption(symbol string) (FutureOptionDetailedResponse, error) {
 	urlVal := fmt.Sprintf("%s/instruments/future-options/%s", api.host, url.PathEscape(symbol))
 	data, err := api.fetchData(urlVal)
@@ -447,7 +496,9 @@ func (api *TastytradeAPI) GetFutureOption(symbol string) (FutureOptionDetailedRe
 	return response, nil
 }
 
-// ListFutureOptionProducts retrieves a list of future option products
+// ListFutureOptionProducts retrieves a list of all future option products.
+// Returns a FutureOptionProductsResponse containing all available future option products
+// with their configuration and trading parameters.
 func (api *TastytradeAPI) ListFutureOptionProducts() (FutureOptionProductsResponse, error) {
 	urlVal := fmt.Sprintf("%s/instruments/future-option-products", api.host)
 	data, err := api.fetchData(urlVal)
@@ -469,7 +520,9 @@ func (api *TastytradeAPI) ListFutureOptionProducts() (FutureOptionProductsRespon
 	return response, nil
 }
 
-// GetFutureOptionProduct retrieves data for a specific future option product
+// GetFutureOptionProduct retrieves data for a specific future option product by exchange and root symbol.
+// Returns a FutureOptionProductDetailedResponse containing detailed product configuration
+// including clearing codes, settlement parameters, and expiration settings.
 func (api *TastytradeAPI) GetFutureOptionProduct(exchange string, rootSymbol string) (FutureOptionProductDetailedResponse, error) {
 	urlVal := fmt.Sprintf("%s/instruments/future-option-products/%s/%s", api.host, exchange, rootSymbol)
 	data, err := api.fetchData(urlVal)

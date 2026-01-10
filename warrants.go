@@ -6,28 +6,37 @@ import (
 	"strings"
 )
 
+// Warrant represents warrant instrument information.
+// It contains details about the warrant including trading status and market information.
 type Warrant struct {
-	Symbol         string `json:"symbol"`
-	InstrumentType string `json:"instrument-type"`
-	ListedMarket   string `json:"listed-market"`
-	Description    string `json:"description"`
-	IsClosingOnly  bool   `json:"is-closing-only"`
-	Active         bool   `json:"active"`
+	Symbol         string `json:"symbol"`          // Warrant symbol
+	InstrumentType string `json:"instrument-type"` // Type of instrument (e.g., "Warrant")
+	ListedMarket   string `json:"listed-market"`   // Market where the warrant is listed
+	Description    string `json:"description"`     // Description of the warrant
+	IsClosingOnly  bool   `json:"is-closing-only"` // Whether only closing positions are allowed
+	Active         bool   `json:"active"`          // Whether the warrant is currently active
 }
 
+// ListWarrantsResult represents the response structure returned by ListWarrants.
+// It contains a list of warrant instruments and context information.
 type ListWarrantsResult struct {
 	Data struct {
-		Items []Warrant `json:"items"`
+		Items []Warrant `json:"items"` // Array of warrant instruments
 	} `json:"data"`
-	Context string `json:"context"`
+	Context string `json:"context"` // API context identifier
 }
 
+// GetWarrantResult represents the response structure returned by GetWarrant.
+// It contains detailed information about a specific warrant instrument.
 type GetWarrantResult struct {
-	Data    Warrant `json:"data"`
-	Context string  `json:"context"`
+	Data    Warrant `json:"data"`    // Warrant data
+	Context string  `json:"context"` // API context identifier
 }
 
-// ListWarrants retrieves list of warrants
+// ListWarrants retrieves a list of warrants, optionally filtered by symbols.
+// If symbols are provided, only those warrants are returned. If no symbols are provided,
+// all available warrants are returned.
+// Returns a ListWarrantsResult containing matching warrant instruments.
 func (api *TastytradeAPI) ListWarrants(symbols ...string) (ListWarrantsResult, error) {
 	url := fmt.Sprintf("%s/instruments/warrants", api.host)
 	if len(symbols) > 0 {
@@ -52,7 +61,9 @@ func (api *TastytradeAPI) ListWarrants(symbols ...string) (ListWarrantsResult, e
 	return response, nil
 }
 
-// GetWarrant retrieves a specific warrant
+// GetWarrant retrieves data for a specific warrant symbol.
+// Returns a GetWarrantResult containing detailed information about the warrant
+// including market, description, and trading status.
 func (api *TastytradeAPI) GetWarrant(symbol string) (GetWarrantResult, error) {
 	url := fmt.Sprintf("%s/instruments/warrants/%s", api.host, symbol)
 	data, err := api.fetchData(url)
