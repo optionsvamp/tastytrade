@@ -10,37 +10,48 @@ import (
 // QuoteData represents market data quote information for any security type.
 // Different instrument types will have different fields populated.
 type QuoteData struct {
-	Symbol             string `json:"symbol"`                          // Security symbol
-	InstrumentType     string `json:"instrument-type"`                 // Type: "Equity", "Equity Option", "Cryptocurrency", "Index", "Future", "Future Option"
-	UpdatedAt          string `json:"updated-at"`                      // Timestamp of last update
-	Bid                string `json:"bid,omitempty"`                   // Bid price
-	BidSize            string `json:"bid-size,omitempty"`              // Bid size
-	Ask                string `json:"ask,omitempty"`                   // Ask price
-	AskSize            string `json:"ask-size,omitempty"`              // Ask size
-	Mid                string `json:"mid,omitempty"`                   // Mid price (average of bid and ask)
-	Mark               string `json:"mark,omitempty"`                  // Mark price
-	Last               string `json:"last,omitempty"`                  // Last trade price
-	LastMkt            string `json:"last-mkt,omitempty"`              // Last market price
-	Beta               string `json:"beta,omitempty"`                  // Beta (for equities)
-	DividendAmount     string `json:"dividend-amount,omitempty"`       // Dividend amount (for equities)
-	DividendFrequency  string `json:"dividend-frequency,omitempty"`    // Dividend frequency (for equities)
-	Open               string `json:"open,omitempty"`                  // Opening price
-	DayHighPrice       string `json:"day-high-price,omitempty"`        // Day high price
-	DayLowPrice        string `json:"day-low-price,omitempty"`         // Day low price
-	Close              string `json:"close,omitempty"`                 // Closing price
-	ClosePriceType     string `json:"close-price-type,omitempty"`      // Close price type (e.g., "Final", "Regular")
-	PrevClose          string `json:"prev-close,omitempty"`            // Previous close price
-	PrevClosePriceType string `json:"prev-close-price-type,omitempty"` // Previous close price type
-	SummaryDate        string `json:"summary-date,omitempty"`          // Summary date
-	PrevCloseDate      string `json:"prev-close-date,omitempty"`       // Previous close date
-	LowLimitPrice      string `json:"low-limit-price,omitempty"`       // Low limit price (for equities)
-	HighLimitPrice     string `json:"high-limit-price,omitempty"`      // High limit price (for equities)
-	IsTradingHalted    bool   `json:"is-trading-halted,omitempty"`     // Whether trading is halted
-	HaltStartTime      int64  `json:"halt-start-time,omitempty"`       // Halt start time (-1 if not halted)
-	HaltEndTime        int64  `json:"halt-end-time,omitempty"`         // Halt end time (-1 if not halted)
-	YearLowPrice       string `json:"year-low-price,omitempty"`        // Year low price
-	YearHighPrice      string `json:"year-high-price,omitempty"`       // Year high price
-	Volume             string `json:"volume,omitempty"`                // Trading volume
+	Symbol             string          `json:"symbol"`                          // Security symbol
+	InstrumentType     string          `json:"instrument-type"`                 // Type: "Equity", "Equity Option", "Cryptocurrency", "Index", "Future", "Future Option"
+	UpdatedAt          string          `json:"updated-at"`                      // Timestamp of last update
+	Bid                string          `json:"bid,omitempty"`                   // Bid price
+	BidSize            string          `json:"bid-size,omitempty"`              // Bid size
+	Ask                string          `json:"ask,omitempty"`                   // Ask price
+	AskSize            string          `json:"ask-size,omitempty"`              // Ask size
+	Mid                string          `json:"mid,omitempty"`                   // Mid price (average of bid and ask)
+	Mark               string          `json:"mark,omitempty"`                  // Mark price
+	Last               string          `json:"last,omitempty"`                  // Last trade price
+	LastMkt            string          `json:"last-mkt,omitempty"`              // Last market price
+	Beta               string          `json:"beta,omitempty"`                  // Beta (for equities)
+	DividendAmount     string          `json:"dividend-amount,omitempty"`       // Dividend amount (for equities)
+	DividendFrequency  string          `json:"dividend-frequency,omitempty"`    // Dividend frequency (for equities)
+	Open               string          `json:"open,omitempty"`                  // Opening price
+	DayHighPrice       string          `json:"day-high-price,omitempty"`        // Day high price
+	DayLowPrice        string          `json:"day-low-price,omitempty"`         // Day low price
+	Close              string          `json:"close,omitempty"`                 // Closing price
+	ClosePriceType     string          `json:"close-price-type,omitempty"`      // Close price type (e.g., "Final", "Regular")
+	PrevClose          string          `json:"prev-close,omitempty"`            // Previous close price
+	PrevClosePriceType string          `json:"prev-close-price-type,omitempty"` // Previous close price type
+	SummaryDate        string          `json:"summary-date,omitempty"`          // Summary date
+	PrevCloseDate      string          `json:"prev-close-date,omitempty"`       // Previous close date
+	LowLimitPrice      string          `json:"low-limit-price,omitempty"`       // Low limit price (for equities)
+	HighLimitPrice     string          `json:"high-limit-price,omitempty"`      // High limit price (for equities)
+	IsTradingHalted    bool            `json:"is-trading-halted,omitempty"`     // Whether trading is halted
+	HaltStartTime      int64           `json:"halt-start-time,omitempty"`       // Halt start time (-1 if not halted)
+	HaltEndTime        int64           `json:"halt-end-time,omitempty"`         // Halt end time (-1 if not halted)
+	YearLowPrice       string          `json:"year-low-price,omitempty"`        // Year low price
+	YearHighPrice      string          `json:"year-high-price,omitempty"`       // Year high price
+	Volume             string          `json:"volume,omitempty"`                // Trading volume
+	OpenInterest       json.RawMessage `json:"open-interest,omitempty"`         // Open interest (for options) - can be number or string
+	// Greeks (for options)
+	Volatility string `json:"volatility,omitempty"` // Implied volatility
+	Delta      string `json:"delta,omitempty"`      // Delta
+	Gamma      string `json:"gamma,omitempty"`      // Gamma
+	Theta      string `json:"theta,omitempty"`      // Theta
+	Vega       string `json:"vega,omitempty"`       // Vega
+	Rho        string `json:"rho,omitempty"`        // Rho
+	TheoPrice  string `json:"theo-price,omitempty"` // Theoretical price
+	DxMark     string `json:"dx-mark,omitempty"`    // DX mark price
+	TickSize   string `json:"tick-size,omitempty"`  // Tick size
 }
 
 // QuotesResponse represents the response structure returned by GetQuotesByType.
